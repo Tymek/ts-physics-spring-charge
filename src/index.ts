@@ -7,7 +7,7 @@ export const settings = {
   gravity: 75,
   mass: 3,
   stiffness: 2,
-  dumping: 2,
+  dumping: 3,
   charge: 500,
   chargeLimit: 5,
   time: 100,
@@ -18,7 +18,7 @@ gui.add(settings, 'gravity').min(0).max(150).step(0.1)
 gui.add(settings, 'mass').min(0.1).max(25).step(0.1)
 gui.add(settings, 'stiffness').min(0.1).max(25).step(0.1)
 gui.add(settings, 'time').min(10).max(100).step(1)
-gui.add(settings, 'dumping').min(0).max(25).step(0.1)
+gui.add(settings, 'dumping').min(0).max(100).step(0.1)
 gui.add(settings, 'charge').min(0).max(1000).step(10)
 gui.add(settings, 'chargeLimit').min(1).max(25).step(1)
 gui.add(settings, 'showForces')
