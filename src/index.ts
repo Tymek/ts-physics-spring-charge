@@ -20,8 +20,8 @@ gui.add(settings, 'stiffness').min(0.1).max(25).step(0.1)
 gui.add(settings, 'time').min(10).max(100).step(1)
 gui.add(settings, 'dumping').min(0).max(25).step(0.1)
 gui.add(settings, 'charge').min(0).max(1000).step(10)
-gui.add(settings, 'showForces')
 gui.add(settings, 'chargeLimit').min(1).max(25).step(1)
+gui.add(settings, 'showForces')
 
 const ctx = (function canvasSetup() {
   const canvas = document.createElement('canvas')
