@@ -1,0 +1,13 @@
+{
+  "include": [
+    "src/**/*",
+  ],
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "esNext",
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": true
+  }
+}

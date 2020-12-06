@@ -1,0 +1,35 @@
+html {
+  height: 100%;
+  font-family: monospace;
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+  margin: 0;
+  background: #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+#gui {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+canvas {
+  flex-grow: 1;
+  margin: 10rem;
+  background: #fff;
+}
+
+#fps {
+  font-size: 2rem;
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
