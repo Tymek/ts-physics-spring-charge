@@ -1,13 +1,13 @@
 import { add } from './gameloop'
 import { settings } from './index'
 
-type Vector = [number, number]
+export type Vector = [number, number]
 const vAdd = (a: Vector, b: Vector): Vector => [a[0] + b[0], a[1] + b[1]]
 const vSub = (a: Vector, b: Vector): Vector => [a[0] - b[0], a[1] - b[1]]
 const vMul = (a: Vector, x: Vector | number): Vector =>
   typeof x === 'number' ? [a[0] * x, a[1] * x] : [a[0] * x[0], a[1] * x[1]]
 
-export const circleAnimation = (ctx: CanvasRenderingContext2D): void => {
+export const circleAnimation = (name: string, anchor: Vector, ctx: CanvasRenderingContext2D): void => {
   const { left, top, width, height } = ctx.canvas.getBoundingClientRect()
   let cursorX: number
   let cursorY: number
@@ -18,12 +18,12 @@ export const circleAnimation = (ctx: CanvasRenderingContext2D): void => {
 
   const drawCircle = (x: number, y: number, radius: number) => {
     ctx.beginPath()
-    ctx.fillStyle = '#253854'
-    ctx.lineWidth = 1
-    ctx.strokeStyle = '#333'
+    ctx.fillStyle = 'rgb(241, 1, 169)'
+    // ctx.lineWidth = 0
+    // ctx.strokeStyle = '#333'
     ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
     ctx.fill()
-    ctx.stroke()
+    // ctx.stroke()
     ctx.closePath()
   }
 
@@ -40,10 +40,9 @@ export const circleAnimation = (ctx: CanvasRenderingContext2D): void => {
   let prevPosition: Vector = [50, height / 10]
   let position: Vector = [50, height / 10]
   let velocity: Vector = [0, 0]
-  const anchor: Vector = [width / 2, height / 2]
   let forces: Array<Vector> = []
 
-  add('circle', {
+  add(name, {
     onUpdate: (delta) => {
       // constants
       const {
@@ -66,13 +65,16 @@ export const circleAnimation = (ctx: CanvasRenderingContext2D): void => {
       const gravitationForce: Vector = [0, mass * gravity]
 
       // charge
-      const distance = vSub(position, [cursorX, cursorY])
-      const r = Math.sqrt(Math.pow(distance[0], 2) + Math.pow(distance[1], 2))
+      const distance = vSub([cursorX, cursorY], position)
+      let r = Math.sqrt(Math.pow(distance[0], 2) + Math.pow(distance[1], 2))
+      if (r < 1) {
+        r = 0
+      }
       const theta = Math.atan2(distance[0], distance[1]) || 0
-      const repultion = (charge * mass) / (r < chargeLimit ? chargeLimit : Math.pow(r, 2)) || 0
+      const attraction = charge / (r < chargeLimit ? chargeLimit : Math.pow(r, 1.1)) || 0
       const chargeForce: Vector = [
-        repultion * Math.sin(theta),
-        repultion * Math.cos(theta),
+        attraction * Math.sin(theta),
+        attraction * Math.cos(theta),
       ]
       // console.log(repultion)
 
@@ -85,16 +87,16 @@ export const circleAnimation = (ctx: CanvasRenderingContext2D): void => {
     },
 
     onDraw: (interp) => {
-      const { showForces } = settings
+      const { showForces, size } = settings
       const x = prevPosition[0] + (position[0] - prevPosition[0]) * interp
       const y = prevPosition[1] + (position[1] - prevPosition[1]) * interp
-      drawCircle(x, y, 20)
+      drawCircle(x, y, size)
 
       if (showForces) {
         forces.map((v, index) => {
           const colors = ['red', 'blue', 'green', 'yellow', 'black']
 
-          drawForce([x, y], vMul(v, 1 / 10), colors[index % colors.length])
+          drawForce([x, y], vMul(v, 1 / 25), colors[index % colors.length])
         })
       }
     },
